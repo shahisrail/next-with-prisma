@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { title, dresscriptoin, type, content } = await req.json();
+    const { title, dresscriptoin, type, content, image } = await req.json();
     if (!title) {
       return new NextResponse("Title is mandatory", { status: 400 });
     }
@@ -13,6 +13,9 @@ export async function POST(req) {
     if (!type) {
       return new NextResponse("Type is mandatory", { status: 400 });
     }
+    if (!image) {
+      return new NextResponse("Image is mandatory", { status: 400 });
+    }
 
     const pin = await db.pin.create({
       data: {
@@ -20,6 +23,7 @@ export async function POST(req) {
         dresscriptoin,
         type,
         content,
+        image,
       },
     });
     return NextResponse.json(pin, { status: 201 });
